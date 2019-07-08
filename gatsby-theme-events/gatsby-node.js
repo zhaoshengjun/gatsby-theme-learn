@@ -9,6 +9,18 @@ exports.onPreBootstrap = ({ reporter }) => {
 	}
 };
 // 2. define the evnt type
-
+exports.sourceNodes = ({ actions }) => {
+	actions.createTypes(`
+        type Event implements Node @dontInfer {
+            id: ID!
+            name: String!
+            location: String!
+            startDate: Date! @dateformat @proxy(from:'start_date')
+            endDate: Date! @dateformat @proxy(from:'end_date')
+            url: String!
+            slug: String!
+        }
+    `);
+};
 // 3. define resolvers for customized field (slug)
 // 4. query event data and create pages
