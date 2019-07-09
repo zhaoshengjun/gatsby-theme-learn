@@ -15,12 +15,29 @@ exports.sourceNodes = ({ actions }) => {
             id: ID!
             name: String!
             location: String!
-            startDate: Date! @dateformat @proxy(from:'start_date')
-            endDate: Date! @dateformat @proxy(from:'end_date')
+            startDate: Date! @dateformat @proxy(from:"start_date")
+            endDate: Date! @dateformat @proxy(from:"end_date")
             url: String!
             slug: String!
         }
     `);
 };
 // 3. define resolvers for customized field (slug)
+exports.createResolvers = ({ createResolvers }) => {
+	const basePath = "/";
+	const slugify = str => {
+		const slug = str
+			.toLowerCase()
+			.replace(/[^a-z0-9]/g, "-")
+			.replace(/^-|-$/g, "");
+		return `/${basePath}/${slug}`.replace(/\/\/+/g, "/");
+	};
+	createResolvers({
+		Event: {
+			slug: {
+				resolve: source => slugify(source.name)
+			}
+		}
+	});
+};
 // 4. query event data and create pages
