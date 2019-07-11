@@ -64,6 +64,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const events = result.data.allEvent.nodes;
   events.forEach(event => {
     const slug = event.slug;
+    console.log(event.id);
     actions.createPage({
       path: slug,
       component: require.resolve("./src/templates/event.js"),
